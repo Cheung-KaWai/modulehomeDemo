@@ -7,8 +7,10 @@ import { useControls } from "leva";
 import gsap from "gsap";
 
 export const Image = () => {
-  const [currentWall, setCurrentWall] = useState("/brick.webp");
-  const [nextWall, setNextWall] = useState("/brick.webp");
+  const [walls, setWalls] = useState({
+    current: "/brick.webp",
+    next: "/brick.webp",
+  });
 
   const texture1 = useTexture("/env.webp");
 
@@ -22,9 +24,10 @@ export const Image = () => {
     []
   );
 
-  useTexture([currentWall, nextWall], (textures) => {
+  useTexture([walls.current, walls.next], (textures) => {
     uniforms.uImageBrick1.value = textures[0];
     uniforms.uImageBrick2.value = textures[1];
+    gsap.fromTo(uniforms.uProgress, { value: 0 }, { value: 1, ease: "linear" });
   });
 
   const test = useControls({
@@ -36,9 +39,7 @@ export const Image = () => {
         wood: "/wood.webp",
       },
       onChange: (e) => {
-        setCurrentWall(nextWall);
-        setNextWall(e);
-        gsap.fromTo(uniforms.uProgress, { value: 0 }, { value: 1, ease: "linear" });
+        setWalls((prev) => ({ current: prev.next, next: e }));
       },
     },
   });
