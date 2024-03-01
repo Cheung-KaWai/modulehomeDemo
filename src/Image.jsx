@@ -17,21 +17,39 @@ export const Image = () => {
   const uniforms = useMemo(
     () => ({
       uEnvironment: new Uniform(texture1),
-      uImageBrick1: new Uniform(),
-      uImageBrick2: new Uniform(),
+      uImageWall1: new Uniform(),
+      uImageWall2: new Uniform(),
       uProgress: new Uniform(1),
       uAnimationStyle: new Uniform(0),
+      uTextureAspectRatio: new Uniform(0),
+      uWindowAspectRatio: new Uniform(window.innerWidth / window.innerHeight),
     }),
     []
   );
 
   useTexture([walls.current, walls.next], (textures) => {
-    uniforms.uImageBrick1.value = textures[0];
-    uniforms.uImageBrick2.value = textures[1];
+    uniforms.uImageWall1.value = textures[0];
+    uniforms.uImageWall2.value = textures[1];
+    uniforms.uTextureAspectRatio.value = textures[0].image.width / textures[0].image.height;
+
+    console.log(uniforms);
+
     gsap.fromTo(uniforms.uProgress, { value: 0 }, { value: 1, ease: "lineair", duration: uniforms.uAnimationStyle.value === 0 ? 1 : 3 });
   });
 
-  const controls = useControls({
+  useEffect(() => {
+    const updateAspectRatio = () => {
+      uniforms.uWindowAspectRatio.value = window.innerWidth / window.innerHeight;
+    };
+
+    window.addEventListener("resize", updateAspectRatio);
+
+    return () => {
+      window.removeEventListener("resize", updateAspectRatio);
+    };
+  }, []);
+
+  useControls({
     wallType: {
       options: {
         brick: "/brick.webp",
@@ -43,7 +61,7 @@ export const Image = () => {
         setWalls((prev) => ({ current: prev.next, next: e }));
       },
     },
-    animationStyle: {
+    animation: {
       options: {
         default: 0,
         circle: 1,
