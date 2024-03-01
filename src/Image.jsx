@@ -20,6 +20,7 @@ export const Image = () => {
       uImageBrick1: new Uniform(),
       uImageBrick2: new Uniform(),
       uProgress: new Uniform(1),
+      uAnimationStyle: new Uniform(0),
     }),
     []
   );
@@ -27,7 +28,7 @@ export const Image = () => {
   useTexture([walls.current, walls.next], (textures) => {
     uniforms.uImageBrick1.value = textures[0];
     uniforms.uImageBrick2.value = textures[1];
-    gsap.fromTo(uniforms.uProgress, { value: 0 }, { value: 1, ease: "lineair", duration: 3 });
+    gsap.fromTo(uniforms.uProgress, { value: 0 }, { value: 1, ease: "lineair", duration: uniforms.uAnimationStyle.value === 0 ? 1 : 3 });
   });
 
   const controls = useControls({
@@ -40,6 +41,15 @@ export const Image = () => {
       },
       onChange: (e) => {
         setWalls((prev) => ({ current: prev.next, next: e }));
+      },
+    },
+    animationStyle: {
+      options: {
+        default: 0,
+        circle: 1,
+      },
+      onChange: (e) => {
+        uniforms.uAnimationStyle.value = e;
       },
     },
   });

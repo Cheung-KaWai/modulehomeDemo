@@ -3,6 +3,7 @@ uniform sampler2D uEnvironment;
 uniform sampler2D uImageBrick1;
 uniform sampler2D uImageBrick2;
 uniform float uProgress;
+uniform float uAnimationStyle;
 
 
 void main(){
@@ -18,11 +19,13 @@ void main(){
   float distCenter = distance(vUv,vec2(0.5));
   float circleAnimationAlpha = (1. - smoothstep(uProgress,uProgress + 0.06, distCenter)) * brickAlpha;
 
+  float animationStyle = mix(uProgress,circleAnimationAlpha,uAnimationStyle);
+
   // get colors of environment
   vec3 environementColors = environment.rgb;
 
   // transition brick images based on the uprogress
-  vec3 brickColor = mix(brick1.rgb,birck2.rgb,circleAnimationAlpha);
+  vec3 brickColor = mix(brick1.rgb,birck2.rgb,animationStyle);
   vec3 finalColor = mix(environementColors,brickColor,brickAlpha);
 
 
