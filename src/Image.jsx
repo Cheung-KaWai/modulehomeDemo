@@ -19,7 +19,7 @@ export const Image = () => {
       uEnvironment: new Uniform(texture1),
       uImageBrick1: new Uniform(),
       uImageBrick2: new Uniform(),
-      uProgress: new Uniform(0),
+      uProgress: new Uniform(1),
     }),
     []
   );
@@ -27,10 +27,10 @@ export const Image = () => {
   useTexture([walls.current, walls.next], (textures) => {
     uniforms.uImageBrick1.value = textures[0];
     uniforms.uImageBrick2.value = textures[1];
-    gsap.fromTo(uniforms.uProgress, { value: 0 }, { value: 1, ease: "linear" });
+    gsap.fromTo(uniforms.uProgress, { value: 0 }, { value: 1, ease: "lineair", duration: 3 });
   });
 
-  const test = useControls({
+  const controls = useControls({
     wallType: {
       options: {
         brick: "/brick.webp",
