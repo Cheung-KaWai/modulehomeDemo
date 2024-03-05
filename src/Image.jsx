@@ -20,7 +20,7 @@ export const Image = () => {
       uImageWall1: new Uniform(),
       uImageWall2: new Uniform(),
       uProgress: new Uniform(1),
-      uAnimationStyle: new Uniform(0),
+      uAnimationStyle: new Uniform(1),
       uTextureAspectRatio: new Uniform(0),
       uWindowAspectRatio: new Uniform(window.innerWidth / window.innerHeight),
     }),
