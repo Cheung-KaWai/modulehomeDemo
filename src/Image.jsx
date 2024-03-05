@@ -63,8 +63,8 @@ export const Image = () => {
     },
     animation: {
       options: {
-        default: 0,
         circle: 1,
+        default: 0,
       },
       onChange: (e) => {
         uniforms.uAnimationStyle.value = e;
